@@ -40,10 +40,9 @@ void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &es
 }
 
 
-void minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, int shift, int nurse){
+bool minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> covertureVector, int shift, int nurse){
 
 	int remainShifts = 3-shift%4;
-
 	int value;
     // temp = cuantos dias quedan por fitlrar en cada iteraicon
     // filrra assignaicon y turnos restatnes 
@@ -54,7 +53,9 @@ void minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estr
         dom[shift+temp][nurse].pop_back();
 
     }
+    //suggested 
 
+    return coverture(covertureVector, dom);
 
 }
 
@@ -73,19 +74,19 @@ bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
 			
 			}
 			cout << "COunter: " << counter << " " << " coverture[i]: " << covertureVector[i] << endl; 
-			if (covertureVector[i]>counter){
-				return false;
+			if (covertureVector[i]<=counter){
+				return true;
 			}
 			counter = 0;
 
 
 		}
-		return true;
+		return false;
 
 }
 
 
-void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> &covertureVector, int i, int j, int imax, int jmax){
+void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, int i, int j, int imax, int jmax){
 
 	// value to assign
 	int k;
@@ -94,52 +95,73 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
             //for (unsigned int k = 2; k-- > 0; ){
         	// dom[i][j] = = [0,1]
             for (auto domij: dom[i][j]){
-            	cout << "En el primer for, k= " << 1-domij << endl;
+            	cout << "En el primer for, domij= " << domij << endl;
 
+            	// primero es 1, luego es 0
             	k = 1- domij;
                 // por mientras
             	// si se cumple covertura (coverture == true), se sigue, delo contrario se debe acabar la recursion actual
             	// quizas covertura debe ir antes del for..
-                if(coverture(covertureVector, dom)){
+                //if(coverture(covertureVector, dom)){
 
-                    v[i][j] = k;
-                    dom[i][j].pop_back();
+                //v[i][j] = k;
+                //dom[i][j].pop_back();
+                // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
+                if (k) {
+                	//mfc
+                	if (minimalFC(dom, estructura, covertureVector, i, j)){
 
-                    // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
-                    if (v[i][k]) {
-                    	//mfc
-                    	minimalFC(dom, estructura, i, j);
-                    }
+                		v[i][j] = k;
 
-                    // sin else, se continua normal 
+                		if (j!= jmax -1){
+                		    recursiveS(v,dom,estructura,covertureVector,i,j+1,imax,jmax);
+                		} else {
+                		    if (i != imax -1){
+                		        recursiveS(v,dom,estructura,covertureVector,i+1,j-(jmax-1),imax,jmax);
+                		    } else {
+                		    	// se ha llegado al final de la matriz
+                		    	cout << "imprimir la matriz" << endl; 
+                		        printMatrix(v,4,5);
+                		        cout << "imprimir dominios" << endl;
+                		        /*cout << "Matrix" << endl;
+                		        for (int row = 0; row < 28; row++){
+                		            for (int col = 0; col < 25; col++){
+                		                cout << v[row][col] << " ";
+                		            }
+                		        }
+                		        cout << endl;*/
+                		    }
+                		}
 
-                    if (j!= jmax -1){
-                        recursiveS(v,dom,estructura,covertureVector,i,j+1,imax,jmax);
-                    } else {
-                        if (i != imax -1){
-                            recursiveS(v,dom,estructura,covertureVector,i+1,j-(jmax-1),imax,jmax);
-                        } else {
-
-                        	// se ha llegado al final de la matriz
-                        	cout << "imprimir la matriz" << endl; 
-                            printMatrix(v,28,25);
-                            cout << "imprimir dominios" << endl;
+                	}
+                
 
 
-                            /*cout << "Matrix" << endl;
-                            for (int row = 0; row < 28; row++){
-                                for (int col = 0; col < 25; col++){
-
-                                    cout << v[row][col] << " ";
-                                }
-                            }
-                            cout << endl;*/
-                        }
-                    }
-                // restaurar 
-                } else {
-    
                 }
+                // sin else, se continua normal 
+                // if (j!= jmax -1){
+                //     recursiveS(v,dom,estructura,covertureVector,i,j+1,imax,jmax);
+                // } else {
+                //     if (i != imax -1){
+                //         recursiveS(v,dom,estructura,covertureVector,i+1,j-(jmax-1),imax,jmax);
+                //     } else {
+                //     	// se ha llegado al final de la matriz
+                //     	cout << "imprimir la matriz" << endl; 
+                //         printMatrix(v,4,5);
+                //         cout << "imprimir dominios" << endl;
+                //         /*cout << "Matrix" << endl;
+                //         for (int row = 0; row < 28; row++){
+                //             for (int col = 0; col < 25; col++){
+                //                 cout << v[row][col] << " ";
+                //             }
+                //         }
+                //         cout << endl;*/
+                //     }
+                // }
+                // restaurar 
+                //} else {
+ 				//   
+                //}
             }
         }  
     } 

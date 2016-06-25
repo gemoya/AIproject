@@ -29,6 +29,7 @@ using Matrix = vector < vector<int> >;
 int main (int argc, char **argv) {
 
 
+    cout << "Iniciando" << endl;
     int *vars = new int[3];
     int **covertureMatrix;
     int **preferencesMatrix;
@@ -133,7 +134,23 @@ int main (int argc, char **argv) {
     }
 
 
-    recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
+    Matrix juguete1(4,vector<int>(5));
+    vector<vector<vector<int>>> juguete2(4,(vector<vector<int>>(5,(vector<int>(2)))));
+    vector<vector<list<int>>> juguete3(4,(vector<list<int>>(5)));
+
+    vector<int> juguete4 = {2,2,1,2};
+
+    for (int i = 0; i<4; i++){
+        for(int j = 0; j<5; j++){
+            for(int k = 0; k<2; k++){
+                cout << "en el tercer for" << endl;
+                juguete2[i][j][k] = k;
+            }
+        }
+    }
+
+    //recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
+    recursiveS(juguete1,juguete2,juguete3,juguete4, 0,0,4,5);
 
 
 
