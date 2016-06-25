@@ -108,6 +108,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                     // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
                     if (v[i][k]) {
                     	//mfc
+                    	minimalFC(dom, estructura, i, j);
                     }
 
                     // sin else, se continua normal 
