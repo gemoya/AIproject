@@ -44,18 +44,28 @@ bool minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estr
 
 	int remainShifts = 3-shift%4;
 	int value;
+
+	// crear un dominio temporal para filtrar
+	vector<vector<vector<int>>> test = dom;
     // temp = cuantos dias quedan por fitlrar en cada iteraicon
     // filrra assignaicon y turnos restatnes 
     for (int temp=1; temp< remainShifts+1; temp++){
 
-        value = dom[shift+temp][nurse].back();
+        value = test[shift+temp][nurse].back();
         estructura[shift+temp][nurse].push_back(value);
-        dom[shift+temp][nurse].pop_back();
+        test[shift+temp][nurse].pop_back();
 
     }
     //suggested 
 
-    return coverture(covertureVector, dom);
+    // si se cumple la covertura entonces el dominio se cambia
+    // de lo contrario no, ya que no se debe asignar aun supuestamente
+    if (coverture(covertureVector, dom)){
+    	dom = test;
+    	return true;
+    } else {
+    	return false;
+    }
 
 }
 
@@ -63,6 +73,7 @@ bool minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estr
 bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
 
 		// counter == enfermeras disponibles para assignar
+
 		int counter=0;
 		for(unsigned int i = 0; i<covertureVector.size(); i++){
 			for(auto n: dom[i]){
@@ -73,7 +84,7 @@ bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
 
 			
 			}
-			cout << "COunter: " << counter << " " << " coverture[i]: " << covertureVector[i] << endl; 
+			cout << "COunter: " << counter << " " << " covertura: " << covertureVector[i] << " del turno " << i << endl; 
 			if (covertureVector[i]<=counter){
 				return true;
 			}
@@ -107,10 +118,11 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 //v[i][j] = k;
                 //dom[i][j].pop_back();
                 // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
-                if (k) {
-                	//mfc
-                	if (minimalFC(dom, estructura, covertureVector, i, j)){
+                if (true) {
+                	cout << "k : " << k << endl;
+                	if (minimalFC(dom, estructura, covertureVector, i, j) && k ){
 
+                		cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
 
                 		if (j!= jmax -1){
@@ -134,9 +146,10 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		}
 
                 	}
-                
-
-
+                } else {
+                	cout << " terminaod el for para i: " << i << " y j: " << j << endl;
+                	cout << "asignacion actual" << endl; 
+                	printMatrix(v,4,5);
                 }
                 // sin else, se continua normal 
                 // if (j!= jmax -1){
