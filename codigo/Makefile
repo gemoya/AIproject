@@ -14,3 +14,10 @@ helpers.o: helpers.cpp
 	$(CC) $(CPPFLAGS) -c helpers.cpp
 assignment.o: assignment.cpp
 	$(CC) $(CPPFLAGS) -c assignment.cpp
+
+binaries: assignment.o helpers.o nursescheduling.o nsp.o 
+
+clean:
+	rm -f $(binaries) *.o
+
+

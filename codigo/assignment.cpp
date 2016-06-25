@@ -34,19 +34,24 @@ Ejemplo dom
 
 
 //no terminado
-//void undoFilters(){}
-//no terminado
-// falta que lo sacado vaya en estructura
+void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, int shift, int nurse){
+
+
+}
+
 
 void minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, int shift, int nurse){
 
 	int remainShifts = 3-shift%4;
 
+	int value;
     // temp = cuantos dias quedan por fitlrar en cada iteraicon
     // filrra assignaicon y turnos restatnes 
     for (int temp=1; temp< remainShifts+1; temp++){
 
-        //dom[shift+temp][nurse] = 0;
+        value = dom[shift+temp][nurse].back();
+        estructura[shift+temp][nurse].push_back(value);
+        dom[shift+temp][nurse].pop_back();
 
     }
 
@@ -117,6 +122,8 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                         	// se ha llegado al final de la matriz
                         	cout << "imprimir la matriz" << endl; 
                             printMatrix(v,28,25);
+                            cout << "imprimir dominios" << endl;
+
 
                             /*cout << "Matrix" << endl;
                             for (int row = 0; row < 28; row++){
