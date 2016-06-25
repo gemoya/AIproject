@@ -123,8 +123,6 @@ int main (int argc, char **argv) {
     vector<vector<vector<int>>> doms(d*s,(vector<vector<int>>(n,(vector<int>(2)))));
     vector<vector<list<int>>> estructura(d*s,(vector<list<int>>(n)));
 
-    cout << "Probando dominios" << endl;
-
     for (int i = 0; i<d*s; i++){
         for(int j = 0; j<n; j++){
             for(int k = 0; k<2; k++){
@@ -143,7 +141,6 @@ int main (int argc, char **argv) {
     for (int i = 0; i<4; i++){
         for(int j = 0; j<5; j++){
             for(int k = 0; k<2; k++){
-                cout << "en el tercer for" << endl;
                 juguete2[i][j][k] = k;
             }
         }

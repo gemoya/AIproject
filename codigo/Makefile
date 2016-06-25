@@ -18,6 +18,6 @@ assignment.o: assignment.cpp
 binaries: assignment.o helpers.o nursescheduling.o nsp.o 
 
 clean:
-	rm -f $(binaries) *.o
+	rm -f $(binaries) *.o nsp
 
 

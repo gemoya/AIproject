@@ -100,12 +100,15 @@ bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
 void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, int i, int j, int imax, int jmax){
 
 	// value to assign
+
 	int k;
     if (i< imax){
         if (j < jmax){
             //for (unsigned int k = 2; k-- > 0; ){
         	// dom[i][j] = = [0,1]
-            for (auto domij: dom[i][j]){
+        	vector<int> actualDom = dom[i][j];
+            for (auto domij: actualDom){
+            	cout << "i: " << i << "j: " << j <<endl;
             	cout << "En el primer for, domij= " << domij << endl;
 
             	// primero es 1, luego es 0
