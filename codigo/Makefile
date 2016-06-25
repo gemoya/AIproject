@@ -1,10 +1,10 @@
 CPPFLAGS=--std=c++11 -Wall
 CC = g++
 
-all: nsp.o nursescheduling.o helpers.o
-	$(CC) helpers.o nursescheduling.o nsp.o -o nsp
+all: nsp.o nursescheduling.o helpers.o assignment.o 
+	$(CC) assignment.o helpers.o nursescheduling.o nsp.o -o nsp
 
-nsp.o: nsp.cpp nursescheduling.hpp helpers.hpp
+nsp.o: nsp.cpp nursescheduling.hpp helpers.hpp assignment.hpp
 	$(CC) $(CPPFLAGS) -c nsp.cpp
 
 nursescheduling.o: nursescheduling.cpp
@@ -12,3 +12,5 @@ nursescheduling.o: nursescheduling.cpp
 
 helpers.o: helpers.cpp
 	$(CC) $(CPPFLAGS) -c helpers.cpp
+assignment.o: assignment.cpp
+	$(CC) $(CPPFLAGS) -c assignment.cpp

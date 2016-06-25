@@ -8,6 +8,7 @@
 	
 #include "nursescheduling.hpp"
 #include "helpers.hpp"
+#include "assignment.hpp"
 using namespace std;
 
 // defining a nurse
@@ -99,7 +100,7 @@ int main (int argc, char **argv) {
 
 
     //vector<int> testo(n*d*s,0);
-    Matrix testo2(d*s,vector<int>(n,-1));
+    Matrix testo2(d*s,vector<int>(n,0));
     //printMatrix(testo2, 2,4);
     //recursiveSearch(testo,domainsVector,testo2,0,n*d*s);
 
@@ -116,10 +117,28 @@ int main (int argc, char **argv) {
 
     //initializeDomains(d,d*s,n)
 
-    recursiveSearch4(testo3, domainsVec, covertureVector, 0, d*s);
+    //recursiveSearch4(testo3, domainsVec, covertureVector, 0, d*s);
+
+    vector<vector<vector<int>>> doms(d*s,(vector<vector<int>>(n,(vector<int>(2)))));
+    vector<vector<list<int>>> estructura(d*s,(vector<list<int>>(n)));
+
+    cout << "Probando dominios" << endl;
+
+    for (int i = 0; i<d*s; i++){
+        for(int j = 0; j<n; j++){
+            for(int k = 0; k<2; k++){
+                doms[i][j][k] = k;
+            }
+        }
+    }
+
+
+    recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
+
 
 
 
 
     return 0;
+
 }

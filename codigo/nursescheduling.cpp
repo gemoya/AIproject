@@ -410,58 +410,67 @@ void matrixToVec(int **vars, int ***covertureMatrix, vector<int> &v){
 // }
 
 
+void checkout(){
+
+}
 
 
-//void recursiveSearch2(vector<vector<int>> &v, vector<vector<vector<int>>> &d, vector<vector<vector<vector<int>>>> &t,  int i, int j, int imax, int jmax){
 
-//     if (i< imax){
 
-//         if (j < jmax){
+void recursiveSearch2(vector<vector<int>> &v, vector<vector<vector<int>>> &d, vector<vector<vector<vector<int>>>> &t,  int i, int j, int imax, int jmax){
+
+    if (i< imax){
+
+        if (j < jmax){
     
-//             for (unsigned int k = 2; k-- > 0; ){
+            for (unsigned int k = 2; k-- > 0; ){
     
-//                 if(true){
+                if(true){
 
                         
-//                     // si el 1 esta disponible en el dominio
-//                     v[i][j] = k;
-//                     // falta si no esta disponible el 1
+                    // si el 1 esta disponible en el dominio
+                    v[i][j] = k;
+                    // falta si no esta disponible el 1
 
-//                     mfc(d,t,j,i);
+                    //mfc(d,t,j,i);
 
-//                     if (j!= jmax -1){
+                    if (j!= jmax -1){
                         
-//                         recursiveSearch2(v,d,t,i,j+1,imax,jmax);
+                        recursiveSearch2(v,d,t,i,j+1,imax,jmax);
 
-//                     } else {
+                    } else {
 
-//                         if (i != imax -1){
-//                             recursiveSearch2(v,d,t,i+1,j-(jmax-1),imax,jmax);
-//                         } else {
+                        if (i != imax -1){
+                            recursiveSearch2(v,d,t,i+1,j-(jmax-1),imax,jmax);
+                        } else {
 
 
 
-//                             printMatrix(v,28,25);
+                            printMatrix(v,28,25);
 
-//                             /*cout << "Matrix" << endl;
-//                             for (int row = 0; row < 28; row++){
-//                                 for (int col = 0; col < 25; col++){
+                            /*cout << "Matrix" << endl;
+                            for (int row = 0; row < 28; row++){
+                                for (int col = 0; col < 25; col++){
 
-//                                     cout << v[row][col] << " ";
-//                                 }
-//                             }
-//                             cout << endl;*/
+                                    cout << v[row][col] << " ";
+                                }
+                            }
+                            cout << endl;*/
 
-//                         }
-//                     }
+                        }
+
+
+
+                    }
     
+                // restaurar 
     
-//                 } else {
+                } else {
     
-//                 }
-//             }
-//         }  
-//     } }
+                }
+            }
+        }  
+    } }
 
 // void joinDomains(vector<list<int>> &v, list<int> filtered){
 
@@ -604,11 +613,40 @@ void recursiveSearch4(vector<list<int>> &v, vector<vector<vector<int>>> &d, vect
                 } else {
 
 
-                    domainTime[i][j] = 0;
+                    if(checkOut(coverture, domainTime, v, i)){
 
-                    d.push_back(domainTime);
+                        domainTime[i][j] = 0;
+                        d.push_back(domainTime);
 
-                    recursiveSearch4(v,d,coverture,i+1,imax);
+                        recursiveSearch4(v,d,coverture,i+1,imax);
+
+
+
+                    } else { 
+
+                        cout << "covertura no satisfecha" << endl;
+                        cout << "imprimriendo asignacion :"<< endl;
+                        for (auto val: v){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+                        cout << endl;
+                        cout << "imprimriendo filtro :"<< endl;
+                        for (auto val: domainTime){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+
+
+                    }
+
+
                 } 
 
             } 
