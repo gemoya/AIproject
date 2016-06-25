@@ -467,6 +467,10 @@ void matrixToVec(int **vars, int ***covertureMatrix, vector<int> &v){
 
 // }
 
+
+
+//filro para que enfermeras trabajan una vez al dia, es decir
+// si trabaja el turno de mañana entonces si cambian a 0
 void filterSameDay(vector<vector<int>> &d, int nurse, int shift){
 
     int remainShifts = 3-shift%4;
@@ -481,6 +485,9 @@ void filterSameDay(vector<vector<int>> &d, int nurse, int shift){
 
 }
 
+
+//Chequeo de cobertura, si la suma de las enfermeras disponibles para algun turno no se cumple, entonces
+// retorna false, utilizando SumNurses para sumar y ver disponibles
 bool checkOut(vector<int> coverture, vector<vector<int>> domainTime, vector<list<int>> v, int actual){
 
 
@@ -502,6 +509,8 @@ bool checkOut(vector<int> coverture, vector<vector<int>> domainTime, vector<list
     return true;
 }
 
+// SUma de enfermeras disponibles en la matriz,
+// es decir las la suma de los 1s en las filas de D*sxN
 int sumNurses(vector<int> row){
 
     int nursesCount=0;
@@ -515,19 +524,14 @@ int sumNurses(vector<int> row){
 
 // 
 void recursiveSearch3(vector<list<int>> &v, vector<vector<vector<int>>> &d, vector<int> &coverture, int i, int imax){
-<
+
     vector<vector<int>> domainTime = d.back();
     if (i < imax){
         int flag = 1;
 
-
-
-    
         // recorriendo el dominio de enfermeras para el turno i
         for(int j = 0; j<domainTime[i].size(); j++){
     
-
-
             // si la enfermera esta disponible
             if (domainTime[i][j] == 1){
 
@@ -536,14 +540,9 @@ void recursiveSearch3(vector<list<int>> &v, vector<vector<vector<int>>> &d, vect
             bool finder = (((v[i].end()) == find(v[i].begin(), v[i].end(), j+1 )));
             if (domainTime[i][j] && finder){
                 cout << "Entrando al if con turno: " << i << "y enfermera: " << j+1 << endl;
-                for 
+    
                 // filtro
                 filterSameDay(domainTime,j,i);
-
-
-
-
-
 
                 //check out, recibe el turno, dia, y el tamaño del vector de asignacion para el turno i
                 if (checkOut(coverture, domainTime, v, i)) {
