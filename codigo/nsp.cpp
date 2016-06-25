@@ -62,7 +62,7 @@ int main (int argc, char **argv) {
     int i,j;
 
 
-    int c = heuristics(&vars, &nurses, &sortedIds, &heuristicMatrix);
+    //int c = heuristics(&vars, &nurses, &sortedIds, &heuristicMatrix);
 
     // a matrix of vectors with 2d vectors of nurses and it preferences
     vector<Matrix> m(d*s, vector<vector<int>>(2, vector<int>(n)));
@@ -116,7 +116,7 @@ int main (int argc, char **argv) {
 
     //initializeDomains(d,d*s,n)
 
-    recursiveSearch3(testo3, domainsVec, covertureVector, 0, d*s);
+    recursiveSearch4(testo3, domainsVec, covertureVector, 0, d*s);
 
 
 

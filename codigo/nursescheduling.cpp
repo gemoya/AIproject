@@ -424,7 +424,7 @@ void matrixToVec(int **vars, int ***covertureMatrix, vector<int> &v){
 
                         
 //                     // si el 1 esta disponible en el dominio
-//                     v[i][j] = 1;
+//                     v[i][j] = k;
 //                     // falta si no esta disponible el 1
 
 //                     mfc(d,t,j,i);
@@ -521,6 +521,110 @@ int sumNurses(vector<int> row){
     }
     return nursesCount;
 }
+
+
+void recursiveSearch4(vector<list<int>> &v, vector<vector<vector<int>>> &d, vector<int> &coverture, int i, int imax){
+
+    vector<vector<int>> domainTime = d.back();
+    if (i < imax){
+        int flag = 1;
+
+        // recorriendo el dominio de enfermeras para el turno i
+        for(int j = 0; j<domainTime[i].size(); j++){
+    
+            // si la enfermera esta disponible
+
+            for (unsigned int k = 2; k-- > 0; ){
+
+                bool finder = (((v[i].end()) == find(v[i].begin(), v[i].end(), j+1 )));
+                if (domainTime[i][j] && finder && k){
+                    cout << "Entrando al if con turno: " << i << "y enfermera: " << j+1 << endl;
+                    // filtro
+                    filterSameDay(domainTime,j,i);
+                    //check out, recibe el turno, dia, y el tamaño del vector de asignacion para el turno i
+                    if (checkOut(coverture, domainTime, v, i)) {
+                        // agregar a los dominios en el tiempo el dominio filtrado en este tiempo
+                        d.push_back(domainTime);
+                        // asignar enfermera 
+                        v[i].push_back(j+1);
+                        cout<< "cobertura satisfecha" << endl;
+                        cout << "imprimriendo asignacion :"<< endl;
+                        for (auto val: v){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+                        cout << endl;
+                        cout << "imprimriendo filtro :"<< endl;
+                        for (auto val: domainTime){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+                        cout << endl;
+                    } else {
+                        cout << "covertura no satisfecha" << endl;
+                        cout << "imprimriendo asignacion :"<< endl;
+                        for (auto val: v){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+                        cout << endl;
+                        cout << "imprimriendo filtro :"<< endl;
+                        for (auto val: domainTime){
+                            cout << "<";
+                            for (auto l: val){
+                                cout << l << " ";
+                            }
+                            cout << ">"<< endl;
+                        }
+                        cout << endl;
+                        flag =1;
+                        // vector<vector<int>> domainTemp = d.back();
+                         d.pop_back();
+                        // domainTemp[i][j]=0;
+                        // d.push_back(domainTemp);
+                        if (v[i].size() == 0){
+                            cout << "ME DEVOLVI DE TURNO" << endl;
+                            v[i-1].pop_back();
+                            recursiveSearch4(v,d,coverture,i-1,imax);
+                        } else{
+                            cout << "ME DEVOLVI DE ASIGNACION" << endl;
+                            v[i].pop_back();
+                            recursiveSearch4(v,d,coverture,i,imax);
+                        }
+                    }
+                } else {
+
+
+                    domainTime[i][j] = 0;
+
+                    d.push_back(domainTime);
+
+                    recursiveSearch4(v,d,coverture,i+1,imax);
+                } 
+
+            } 
+
+        } 
+        if (flag == 1) recursiveSearch4(v,d,coverture,i+1,imax);
+    }
+}
+
+
+
+
+
+
+
+
 
 // 
 void recursiveSearch3(vector<list<int>> &v, vector<vector<vector<int>>> &d, vector<int> &coverture, int i, int imax){
