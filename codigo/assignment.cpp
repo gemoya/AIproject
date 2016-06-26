@@ -51,7 +51,8 @@ void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &es
 
 bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> covertureVector, int shift, int nurse){
 
-	int remainShifts = 1-shift%2;
+	//int remainShifts = 1-shift%2;
+	int remainShifts = 3-shift%4;
 	int value;
 
 	// crear un dominio temporal para filtrar
@@ -179,7 +180,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
 
                 //v[i][j] = k;
                 //dom[i][j].pop_back();
-                // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
+                // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estructura
 
             	vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
             	estructuraRecursion = estructura;
@@ -194,7 +195,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
                 		cout << "imprimir la matriz" << endl; 
-                		printMatrix(v,4,5);
+                		printMatrix(v,28,25);
 
                 		printDomain(dom);
                 		printStruct(estructuraRecursion);
@@ -215,7 +216,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		    } else {
                 		    	// se ha llegado al final de la matriz
                 		    	cout << "imprimir la matriz" << endl; 
-                		        printMatrix(v,4,5);
+                		        printMatrix(v,28,25);
                 		        cout << "imprimir dominios" << endl;
 
 
@@ -235,7 +236,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
 
                 		//undoFilters(dom,estructura);
                 		v[i][j] = 0;
-                		printMatrix(v,4,5);
+                		printMatrix(v,28,25);
                 		if (j!= jmax -1){
                 			cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
                 		    recursiveS(v,dom,estructuraRecursion,covertureVector,i,j+1,imax,jmax);
@@ -251,7 +252,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
 
                 		    	// se ha llegado al final de la matriz
                 		    	cout << "imprimir la matriz" << endl; 
-                		        printMatrix(v,4,5);
+                		        printMatrix(v,28,25);
                 		        cout << "imprimir dominios" << endl;
                 		        /*cout << "Matrix" << endl;
                 		        for (int row = 0; row < 28; row++){

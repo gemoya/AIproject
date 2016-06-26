@@ -138,7 +138,7 @@ int main (int argc, char **argv) {
 
     vector<int> juguete4 = {1,4,1,2};
 
-    
+
     for (int i = 0; i<4; i++){
         for(int j = 0; j<5; j++){
             for(int k = 0; k<2; k++){
@@ -147,8 +147,8 @@ int main (int argc, char **argv) {
         }
     }
 
-    //recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
-    recursiveS(juguete1,juguete2,juguete3,juguete4, 0,0,4,5);
+    recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
+    //recursiveS(juguete1,juguete2,juguete3,juguete4, 0,0,4,5);
 
 
 
