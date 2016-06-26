@@ -49,7 +49,7 @@ void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &es
 }
 
 
-bool minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> covertureVector, int shift, int nurse){
+bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> covertureVector, int shift, int nurse){
 
 	int remainShifts = 1-shift%2;
 	int value;
@@ -72,7 +72,7 @@ bool minimalFC(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estr
 
     // si se cumple la covertura entonces el dominio se cambia
     // de lo contrario no, ya que no se debe asignar aun supuestamente
-    if (coverture(covertureVector, test)){
+    if (coverture(v,covertureVector, test,shift,nurse)){
     	dom = test;
     	return true;
     } else {
@@ -98,14 +98,41 @@ bool hasone(vector<vector<vector<int>>> &dom, int shift, int nurse){
 
 // separar asignados en otro lado y que covertura sume desde poscion actual
 // asta el final de la fila + los asignados
-bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
+// retorna true si se cumple la cobertura en el turno actual y en los siguientes
+bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vector<vector<int>>> &dom, int shift, int nurse){
 
-		// counter == enfermeras disponibles para assignar
+	// counter == enfermeras disponibles para assignar
 
-		int counter=0;
-		for(unsigned int i = 0; i<covertureVector.size(); i++){
-			for(auto n: dom[i]){
-				for(auto element: n){
+	bool temp;
+
+	int thisshift=0;
+	int counter = 0;
+
+	//los ya asignados tambien debe ser sumados ya que aportan a la cobertura
+	for (int j = 0; j<nurse; j++){
+		thisshift+=v[shift][j];
+	}
+
+	// misma fila de la matriz de asignacion caso especial en el que se cuenta desde el punto actual hasta el final de la fila
+	for(unsigned int j = nurse; j<dom[shift].size(); j++){
+		for(auto element: dom[shift][j]){
+			counter+= element;
+		}
+	}
+
+	cout << "Primera cobertura: Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
+
+
+	if (covertureVector[shift]<=counter+thisshift){
+		cout << "Se cumple la cobertura del turno: " << shift << endl;
+		temp = true;
+		counter=0;
+
+		// chequear covertura en el resto de los turnos
+		for(unsigned int i = (shift+1); i<covertureVector.size(); i++){
+			for(unsigned j = 0; j < dom[i].size(); j++){
+			//for(auto n: dom[i]){
+				for(auto element: dom[i][j]){
 					//cout << "elemen: " << element << endl;
 					counter+= element;
 				}
@@ -117,10 +144,14 @@ bool coverture(vector<int> &covertureVector, vector<vector<vector<int>>> &dom){
 				return false;
 			}
 			counter = 0;
-
-
 		}
-		return true;
+	} else {
+		return false;
+	}
+
+	// si se cumplen los casos entonces temp se queda como true
+	cout << "Cobertura retornando TRUE" << endl;
+	return temp;
 
 }
 
@@ -151,10 +182,14 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estuctura
 
             	vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
+            	estructuraRecursion = estructura;
+
+
+
 
                 if (true) {
                 	cout << "k : " << k << endl;
-                	if (minimalFC(dom, estructuraRecursion, covertureVector, i, j) && k && hasone(dom,i,j) ){
+                	if (minimalFC(v,dom, estructuraRecursion, covertureVector, i, j) && k && hasone(dom,i,j) ){
 
                 		cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
@@ -203,11 +238,11 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		printMatrix(v,4,5);
                 		if (j!= jmax -1){
                 			cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
-                		    recursiveS(v,dom,estructura,covertureVector,i,j+1,imax,jmax);
+                		    recursiveS(v,dom,estructuraRecursion,covertureVector,i,j+1,imax,jmax);
                 		} else {
                 		    if (i != imax -1){
                 		    	cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
-                		        recursiveS(v,dom,estructura,covertureVector,i+1,j-(jmax-1),imax,jmax);
+                		        recursiveS(v,dom,estructuraRecursion,covertureVector,i+1,j-(jmax-1),imax,jmax);
                 		    } else {
 
 
