@@ -136,8 +136,9 @@ int main (int argc, char **argv) {
     vector<vector<vector<int>>> juguete2(4,(vector<vector<int>>(5,(vector<int>(2)))));
     vector<vector<list<int>>> juguete3(4,(vector<list<int>>(5)));
 
-    vector<int> juguete4 = {2,2,1,2};
+    vector<int> juguete4 = {1,4,1,2};
 
+    
     for (int i = 0; i<4; i++){
         for(int j = 0; j<5; j++){
             for(int k = 0; k<2; k++){
