@@ -11,17 +11,7 @@
 #include "assignment.hpp"
 using namespace std;
 
-// defining a nurse
-/*struct nurse {
-    int id;
-    vector<int> preferences;
-    vector<string> assigments;
-    // more
-};
-*/
-//typedef struct nurse Nurse;
-//Nurse *nurses;
-//Nurse *heuristicNurses; // maybe not necesary
+
 
 using Matrix = vector < vector<int> >;
 
@@ -47,7 +37,6 @@ int main (int argc, char **argv) {
     int *sortedIds;
     int **heuristicMatrix;
 	    
-    nurse *nurses;
 
     //int a = parserv2(&argv[1], &vars, &covertureMatrix, &preferencesMatrix);
     int a = parserv2(&argv[1], &vars, &covertureMatrix, &preferencesMatrix, &consNurseAssigments, &consNurseTurns, &consMatrix);
@@ -67,26 +56,26 @@ int main (int argc, char **argv) {
     //int c = heuristics(&vars, &nurses, &sortedIds, &heuristicMatrix);
 
     // a matrix of vectors with 2d vectors of nurses and it preferences
-    vector<Matrix> m(d*s, vector<vector<int>>(2, vector<int>(n)));
+    
+    //vector<Matrix> m(d*s, vector<vector<int>>(2, vector<int>(n)));
 
-    parseDomains( &vars, &preferencesMatrixT, m);
+    //parseDomains( &vars, &preferencesMatrixT, m);
 
     
 
     // a copy  matrix of previous matrix to be sorted
-    vector<Matrix> m2(d*s, vector<vector<int>>(2, vector<int>(n)));
-    m2 = m;
+    //vector<Matrix> m2(d*s, vector<vector<int>>(2, vector<int>(n)));
+    //m2 = m;
 
-    applyHeuristic(&vars, m2); // sorting matrix
+    //applyHeuristic(&vars, m2); // sorting matrix
 
     // matrix coverture to vector
     vector < int > covertureVector(d*s);
-    cout << covertureVector.size() << endl;
     matrixToVec(&vars, &covertureMatrix, covertureVector);
 
     // matrix of assigments
     // 1 si enfermera se asigna al turno, 0 en caso contrario
-    Matrix assignmentMatrix(d*s, vector<int>(n) );
+    Matrix assignmentMatrix(d*s, vector<int>(n));
     // vector of assignments, listas enfermeras asignadas por cada turno en orden
     vector< list<int> > assignmentVector(d*s);
 

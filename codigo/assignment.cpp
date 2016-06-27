@@ -48,6 +48,28 @@ void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &es
 
 }
 
+void checkCoverture(vector<vector<int>> &v, vector<int> &covertureVector){
+
+	bool check = false;
+	int counter;
+	for(unsigned int i = 0; i<v.size(); i++){
+		for(unsigned int j = 0; j< v[i].size(); j++){
+			counter+=v[i][j];
+		}
+
+		if (counter >= covertureVector[i]) check=true;
+
+		counter = 0;
+	}
+
+	if (check){
+		cout << "SE CUMPLE COBERTURA" << endl;
+
+	}
+
+}
+
+
 
 bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &estructura, vector<int> covertureVector, int shift, int nurse){
 
@@ -110,11 +132,13 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 	int thisshift=0;
 	int counter = 0;
 
+	int remainShifts = 3-shift%4;
+	int remainCoverture = 0;
+
 	//los ya asignados tambien debe ser sumados ya que aportan a la cobertura
 	for (int j = 0; j<nurse; j++){
 		thisshift+=v[shift][j];
 	}
-
 
 	// misma fila de la matriz de asignacion caso especial en el que se cuenta desde el punto actual hasta el final de la fila
 	for(unsigned int j = nurse; j<dom[shift].size(); j++){
@@ -125,39 +149,70 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 
 	cout << "Cobertura del turno actual: " << " Asignados: " << thisshift << " Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
 
-
 	if (covertureVector[shift]<=counter+thisshift){
 		cout << "Se cumple la cobertura del turno actual: " << shift << endl;
 		temp = true;
 		counter=0;
 
-		// chequear covertura en el resto de los turnos
-		for(unsigned int i = (shift+1); i<covertureVector.size(); i++){
+		// chequear covertura de los turnos del dia
+		for(int i = (shift+1); i<remainShifts+1; i++){
 			for(unsigned j = 0; j < dom[i].size(); j++){
 			//for(auto n: dom[i]){
 				for(auto element: dom[i][j]){
 					//cout << "elemen: " << element << endl;
+					
 					counter+= element;
 				}
 			}
-			cout << "Contador del dominio: " << counter << " " << " covertura: " << covertureVector[i] << " del turno " << i << endl; 
-			if (covertureVector[i]<=counter){
-				cout << "Se cumple covertura para el turno: " << i << endl;
-			} else {
-				cout << "No se cumple cobertura para el turno: " << i << endl;
-				return false;
-			}
-			counter = 0;
+		// chequear la cobertura del resto de los turnos
+		// for(unsigned int i = (shift+1); i<covertureVector.size(); i++){
+		// 	for(unsigned j = 0; j < dom[i].size(); j++){
+		// 	//for(auto n: dom[i]){
+		// 		for(auto element: dom[i][j]){
+		// 			//cout << "elemen: " << element << endl;
+		// 			counter+= element;
+		// 		}
+		// 	}
+			remainCoverture+=covertureVector[i];
+		}
+
+		if (remainCoverture<=counter){
+
+		} else {
+			return false;
 		}
 	} else {
 		return false;
 	}
 
-	// si se cumplen los casos entonces temp se queda como true
-	cout << "Cobertura retornando TRUE" << endl;
-	return temp;
 
+ 	cout << "Cobertura retornando TRUE" << endl;
+	return temp;
 }
+
+
+			
+
+// 			cout << "Contador del dominio: " << counter << " " << " covertura: " << covertureVector[i] << " del turno " << i << endl; 
+// 			//if (covertureVector[i]<=counter){
+// 			if (){
+// 				cout << "Se cumple covertura para el turno: " << i << endl;
+// 			}
+// 			} else {
+// 				cout << "No se cumple cobertura para el turno: " << i << endl;
+// 				return false;
+// 			}
+// 			counter = 0;
+// 		}
+// 	} else {
+// 		return false;
+// 	}
+
+// 	// si se cumplen los casos entonces temp se queda como true
+// 	cout << "Cobertura retornando TRUE" << endl;
+// 	return temp;
+
+// }
 
 
 void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, int i, int j, int imax, int jmax){
@@ -221,6 +276,11 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		    	cout << "imprimir la matriz" << endl; 
                 		        printMatrix(v,28,25);
                 		        cout << "imprimir dominios" << endl;
+
+
+                		        checkCoverture(v,covertureVector);
+
+
 
 
                 		        /*cout << "Matrix" << endl;
