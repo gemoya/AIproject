@@ -177,6 +177,8 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 		}
 
 		if (remainCoverture<=counter){
+			cout << "Cobertura retornando TRUE" << endl;
+			return temp;
 
 		} else {
 			return false;
@@ -187,7 +189,7 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 
 
  	cout << "Cobertura retornando TRUE" << endl;
-	return temp;
+	//return temp;
 }
 
 
