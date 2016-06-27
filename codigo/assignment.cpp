@@ -57,10 +57,11 @@ bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<
 
 	// crear un dominio temporal para filtrar
 	vector<vector<vector<int>>> test = dom;
+	cout << "se crea dominio temporal" << endl;
     // temp = cuantos dias quedan por fitlrar en cada iteraicon
     // filrra assignaicon y turnos restatnes 
     for (int temp=1; temp< remainShifts+1; temp++){
-
+    	cout  << "filtrando el turno" << temp+shift << endl; 
         value = (test[shift+temp][nurse]).back();
         cout << "sacando: " << value << "del dominio de la enfermera " << nurse << "para el turno " << shift+temp << endl;
         estructura[shift+temp][nurse].push_back(value);
@@ -114,6 +115,7 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 		thisshift+=v[shift][j];
 	}
 
+
 	// misma fila de la matriz de asignacion caso especial en el que se cuenta desde el punto actual hasta el final de la fila
 	for(unsigned int j = nurse; j<dom[shift].size(); j++){
 		for(auto element: dom[shift][j]){
@@ -121,11 +123,11 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 		}
 	}
 
-	cout << "Primera cobertura: Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
+	cout << "Cobertura del turno actual: " << " Asignados: " << thisshift << " Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
 
 
 	if (covertureVector[shift]<=counter+thisshift){
-		cout << "Se cumple la cobertura del turno: " << shift << endl;
+		cout << "Se cumple la cobertura del turno actual: " << shift << endl;
 		temp = true;
 		counter=0;
 
@@ -142,6 +144,7 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 			if (covertureVector[i]<=counter){
 				cout << "Se cumple covertura para el turno: " << i << endl;
 			} else {
+				cout << "No se cumple cobertura para el turno: " << i << endl;
 				return false;
 			}
 			counter = 0;
@@ -190,7 +193,7 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
 
                 if (true) {
                 	cout << "k : " << k << endl;
-                	if (minimalFC(v,dom, estructuraRecursion, covertureVector, i, j) && k && hasone(dom,i,j) ){
+                	if (hasone(dom,i,j) && k && minimalFC(v,dom, estructuraRecursion, covertureVector, i, j)){
 
                 		cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
