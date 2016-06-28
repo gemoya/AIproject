@@ -9,7 +9,7 @@ bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<
 bool hasone(vector<vector<vector<int>>> &dom, int shift, int nurse);
 
 bool coverture(vector<vector<int>> &v,vector<int> &covertureVector, vector<vector<vector<int>>> &dom, int shift, int nurse);
-void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *input, int i, int j, int imax, int jmax);
+void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *input, int i, int j, int imax, int jmax, clock_t start);
 
 bool checkCoverture(vector<vector<int>> &v, vector<int> &covertureVector);
 

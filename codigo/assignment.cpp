@@ -209,7 +209,7 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 			
 
 
-void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *inputs, int i, int j, int imax, int jmax){
+void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *inputs, int i, int j, int imax, int jmax, clock_t start){
 
 	// value to assign
 
@@ -252,11 +252,11 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
           
                 		if (j!= jmax -1){
                 			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
-                		    recursiveS(v,dom,estructuraRecursion,covertureVector, &(*inputs), i,j+1,imax,jmax);
+                		    recursiveS(v,dom,estructuraRecursion,covertureVector, &(*inputs), i,j+1,imax,jmax, start);
                 		} else {
                 		    if (i != imax -1){
                 		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
-                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax);
+                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax, start);
                 		    } else {
                 		    	// se ha llegado al final de la matriz
 
@@ -267,11 +267,16 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 		        	int d = (*inputs).vars[1];
                 		        	int s = (*inputs).vars[2];
 
-                		        	// checkPreferences(v, &((*inputs).preferencesMatrixT));
-                		        	// checkPenalizations(v, &((*inputs).preferencesMatrixT), &((*inputs).vars), &((*inputs).consNurseAssigments), &((*inputs).consNurseTurns), &((*inputs).consMatrix));
-
- 
+                		        	int preferences = checkPreferences(v, &((*inputs).preferencesMatrixT));
+                					cout << "Mejor solucion tempral, imprimiendo matriz de asignacion" << endl;
                 		        	printMatrix(v,d*s,n);
+                		        	cout << "Total Preferencias: " << preferences << endl;
+                		        	int penalize = checkPenalizations(v, &((*inputs).preferencesMatrixT), &((*inputs).vars), &((*inputs).consNurseAssigments), &((*inputs).consNurseTurns), &((*inputs).consMatrix));
+              						cout << "Total Penalizaciones: " << penalize << endl;
+              						cout << "Calidad: " << checkObjetive(preferences, penalize) << " ";
+              						cout << "En un tiempo de: " << (double)(clock() - start)/CLOCKS_PER_SEC << " segundos." << endl;
+
+
                 		        }
 
 
@@ -285,19 +290,33 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
              
                 		if (j!= jmax -1){
                 			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
-                		    recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs),i,j+1,imax,jmax);
+                		    recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs),i,j+1,imax,jmax, start);
                 		} else {
                 		    if (i != imax -1){
                 		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
-                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax);
+                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax, start);
                 		    } else {
 
 
                 		    	v[i][j] = 0;
                 		    	undoFilters(dom,estructura);
 
-                		        if (checkCoverture(v,covertureVector)) printMatrix(v,28,25);
-              
+                		        if (checkCoverture(v,covertureVector)){
+                		        	int n = (*inputs).vars[0];
+                		        	int d = (*inputs).vars[1];
+                		        	int s = (*inputs).vars[2];
+
+                		        	int preferences = checkPreferences(v, &((*inputs).preferencesMatrixT));
+                					cout << "Mejor solucion tempral, imprimiendo matriz de asignacion" << endl;
+                		        	printMatrix(v,d*s,n);
+                		        	cout << "Total Preferencias: " << preferences << endl;
+                		        	int penalize = checkPenalizations(v, &((*inputs).preferencesMatrixT), &((*inputs).vars), &((*inputs).consNurseAssigments), &((*inputs).consNurseTurns), &((*inputs).consMatrix));
+              						cout << "Total Penalizaciones: " << penalize << endl;
+              						cout << "Calidad: " << checkObjetive(preferences, penalize) << " ";
+              						cout << "En un tiempo de: " << (double)(clock() - start)/CLOCKS_PER_SEC << " segundos." << endl;
+
+
+              					}
                 			}		
                 		}
                 	} 

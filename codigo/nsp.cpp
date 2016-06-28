@@ -141,7 +141,7 @@ int main (int argc, char **argv) {
 
 
     // recursiveS(assignmentM, );
-    recursiveS(assignmentM, doms,estructura, covertureVector, &inputs,0,0 , d*s, n);
+    recursiveS(assignmentM, doms,estructura, covertureVector, &inputs,0,0 , d*s, n, start);
     //recursiveS(assignmentM, doms,estructura, covertureVector, 0,0 , d*s, n);
     //recursiveS(juguete1,juguete2,juguete3,juguete4, 0,0,4,5);
 

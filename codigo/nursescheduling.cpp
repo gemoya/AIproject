@@ -79,10 +79,10 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
     fscanf(input, "%d\t%d", &((*consNurseTurns)[0]), &((*consNurseTurns)[1]));
 
     *consMatrix =  (int **)malloc(4 * sizeof(int*));
-    for(i = 0; i < 3; i++) (*consMatrix)[i] = (int *)malloc( s*sizeof(int));
+    for(i = 0; i < 4; i++) (*consMatrix)[i] = (int *)malloc( s*sizeof(int));
 
 
-    for(i = 0; i < 3; i++){
+    for(i = 0; i < 4; i++){
         fscanf(input, "%d\t%d\t%d\t%d", &((*consMatrix)[i][0]), &((*consMatrix)[i][1]), &((*consMatrix)[i][2]), &((*consMatrix)[i][3]));
     }
 
@@ -197,17 +197,22 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
     int minDaily = (*consNurseTurns)[0];
     int maxDaily = (*consNurseTurns)[1];
 
+
+
     int shift0Min = (*consMatrix)[0][2];
+
     int shift0Max = (*consMatrix)[0][3];
 
     int shift1Min = (*consMatrix)[1][2];
     int shift1Max = (*consMatrix)[1][3];
  
     int shift2Min = (*consMatrix)[2][2];
-    int shift2Max = (*consMatrix)[2][2];
+    int shift2Max = (*consMatrix)[2][3];
  
-    int shift3Min = (*consMatrix)[2][2];
-    int shift3Max = (*consMatrix)[2][2];
+    int shift3Min = (*consMatrix)[3][2];
+    int shift3Max = (*consMatrix)[3][3];
+
+    
 
 
     int shift0MinCons = (*consMatrix)[0][0];
@@ -219,8 +224,8 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
     int shift2MinCons = (*consMatrix)[2][0];
     int shift2MaxCons = (*consMatrix)[2][1];
  
-    int shift3MinCons = (*consMatrix)[2][0];
-    int shift3MaxCons = (*consMatrix)[2][1];
+    int shift3MinCons = (*consMatrix)[3][0];
+    int shift3MaxCons = (*consMatrix)[3][1];
 
     int n,d,s;
 
@@ -228,7 +233,9 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
     //d = (*vars)[1];
     s = (*vars)[2];
 
-    int totalPenalizations=0;
+
+
+    int totalPenalizations = 0;
 
     // total de turnos trabajados
     vector<int> totals(n);
@@ -236,12 +243,11 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
     vector<int> dailyAux(n,0);
     // total turnos/dias trabajados consecutivos
     vector<int> dailyCounter(n,0);
-
     // Cuantas veces se trabajo y cuantas dias consecutitvos se trabajo
     // por cada turno
     for(unsigned int i= 0; i<v.size(); i++){
         // por cada enfermera
-        for(unsigned int j = 0; j< v[i].size(); j++){
+        for(unsigned int j = 0; j< v[0].size(); j++){
             // contar asignaciones
             totals[j]+= v[i][j];
             dailyAux[j]+= v[i][j];
@@ -381,14 +387,14 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
         for(unsigned int j = 0; j< v[i].size(); j++){
             if (i%s == 0){
 
-                if (shift0Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift0Max){
+                if (shift0Min<=shiftCounter[0][j] && shiftCounter[0][j]<=shift0Max){
 
                 } else {
                     penalization3+=3;
 
                 }
 
-                if (!(shift0MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift0MaxCons)){
+                if (!(shift0MinCons<=shiftConsecutive[0][j] && shiftConsecutive[0][j]<=shift0MaxCons)){
                     penalization4+=3;
 
                 }
@@ -397,14 +403,14 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
 
             if (i%s == 1){
 
-                if (shift1Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift1Max){
+                if (shift1Min<=shiftCounter[1][j] && shiftCounter[1][j]<=shift1Max){
 
                 } else {
                  
                     penalization3+=3;   
                 }
 
-                if (!(shift1MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift1MaxCons)){
+                if (!(shift1MinCons<=shiftConsecutive[1][j] && shiftConsecutive[1][j]<=shift1MaxCons)){
                     penalization4+=3;
 
                 }
@@ -412,7 +418,7 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
 
             if (i%s == 2){
 
-                if (shift2Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift2Max){
+                if (shift2Min<=shiftCounter[2][j] && shiftCounter[2][j]<=shift2Max){
 
                 } else {
 
@@ -420,7 +426,7 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
                     
                 }
 
-                if (!(shift2MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift2MaxCons)){
+                if (!(shift2MinCons<=shiftConsecutive[2][j] && shiftConsecutive[2][j]<=shift2MaxCons)){
                     penalization4+=3;
 
                 }
@@ -428,7 +434,7 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
             }
             if (i%s == 3){
 
-                if (shift3Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift3Max){
+                if (shift3Min<=shiftCounter[3][j] && shiftCounter[3][j]<=shift3Max){
 
                 } else {
 
@@ -436,7 +442,7 @@ int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **
                     
                 }
 
-                if (!(shift3MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift3MaxCons)){
+                if (!(shift3MinCons<=shiftConsecutive[3][j] && shiftConsecutive[3][j]<=shift3MaxCons)){
                     penalization4+=3;
 
                 }
