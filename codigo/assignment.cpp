@@ -48,23 +48,30 @@ void undoFilters(vector<vector<vector<int>>> &dom, vector<vector<list<int>>> &es
 
 }
 
-void checkCoverture(vector<vector<int>> &v, vector<int> &covertureVector){
+bool checkCoverture(vector<vector<int>> &v, vector<int> &covertureVector){
 
-	bool check = false;
-	int counter;
+	bool check = true;
+	int counter= 0;
 	for(unsigned int i = 0; i<v.size(); i++){
-		for(unsigned int j = 0; j< v[i].size(); j++){
+		//cout << i << " ";
+		for(unsigned int j = 0; j< v[0].size(); j++){
 			counter+=v[i][j];
 		}
 
-		if (counter >= covertureVector[i]) check=true;
+		//cout << "Comprobacion final " << "turno: " << i << "Cobertura: " << covertureVector[i] << "Asignados: " << counter << endl;
 
+		if (counter < covertureVector[i]){
+			return false;
+		}
 		counter = 0;
 	}
 
 	if (check){
-		cout << "SE CUMPLE COBERTURA" << endl;
+		return true;
+		//cout << "SE CUMPLE COBERTURA" << endl;
 
+	} else {
+		return false;
 	}
 
 }
@@ -79,16 +86,17 @@ bool minimalFC(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<
 
 	// crear un dominio temporal para filtrar
 	vector<vector<vector<int>>> test = dom;
-	cout << "se crea dominio temporal" << endl;
+	//cout << "se crea dominio temporal" << endl;
     // temp = cuantos dias quedan por fitlrar en cada iteraicon
     // filrra assignaicon y turnos restatnes 
     for (int temp=1; temp< remainShifts+1; temp++){
-    	cout  << "filtrando el turno" << temp+shift << endl; 
+    	//cout  << "filtrando el turno" << temp+shift << endl; 
         value = (test[shift+temp][nurse]).back();
-        cout << "sacando: " << value << "del dominio de la enfermera " << nurse << "para el turno " << shift+temp << endl;
+        //cout << "sacando: " << value << "del dominio de la enfermera " << nurse << "para el turno " << shift+temp << endl;
         estructura[shift+temp][nurse].push_back(value);
         test[shift+temp][nurse].pop_back();
-        cout << test[shift+temp][nurse].back() << endl;
+        
+        //cout << test[shift+temp][nurse].back() << endl;
 
     }
 
@@ -147,23 +155,26 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 		}
 	}
 
-	cout << "Cobertura del turno actual: " << " Asignados: " << thisshift << " Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
+	//cout << "Cobertura del turno actual: " << " Asignados: " << thisshift << " Contador del dominio: " << counter << " " << " covertura: " << covertureVector[shift] << " del turno " << shift << endl;
 
 	if (covertureVector[shift]<=counter+thisshift){
-		cout << "Se cumple la cobertura del turno actual: " << shift << endl;
+		//cout << "Se cumple la cobertura del turno actual: " << shift << endl;
 		temp = true;
-		counter=0;
+		
+		//counter=0;
+
+
 
 		// chequear covertura de los turnos del dia
-		for(int i = (shift+1); i<remainShifts+1; i++){
-			for(unsigned j = 0; j < dom[i].size(); j++){
+		for(int i = (shift+1); i<shift+remainShifts+1; i++){
+
+			//for(unsigned j = 0; j < dom[i].size(); j++){
 			//for(auto n: dom[i]){
-				for(auto element: dom[i][j]){
+				//for(auto element: dom[i][j]){
 					//cout << "elemen: " << element << endl;
-					
-					counter+= element;
-				}
-			}
+					//if (element == 1) counter+= element;
+				//}
+			//}
 		// chequear la cobertura del resto de los turnos
 		// for(unsigned int i = (shift+1); i<covertureVector.size(); i++){
 		// 	for(unsigned j = 0; j < dom[i].size(); j++){
@@ -176,8 +187,10 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 			remainCoverture+=covertureVector[i];
 		}
 
-		if (remainCoverture<=counter){
-			cout << "Cobertura retornando TRUE" << endl;
+		//cout << "Cobertura acumulada: " << remainCoverture << " " << "disponibles: " << counter << endl;
+
+		if (remainCoverture<counter){
+			//cout << "Cobertura retornando TRUE" << endl;
 			return temp;
 
 		} else {
@@ -188,36 +201,15 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 	}
 
 
- 	cout << "Cobertura retornando TRUE" << endl;
+ 	//cout << "Cobertura retornando TRUE" << endl;
 	//return temp;
 }
 
 
 			
 
-// 			cout << "Contador del dominio: " << counter << " " << " covertura: " << covertureVector[i] << " del turno " << i << endl; 
-// 			//if (covertureVector[i]<=counter){
-// 			if (){
-// 				cout << "Se cumple covertura para el turno: " << i << endl;
-// 			}
-// 			} else {
-// 				cout << "No se cumple cobertura para el turno: " << i << endl;
-// 				return false;
-// 			}
-// 			counter = 0;
-// 		}
-// 	} else {
-// 		return false;
-// 	}
 
-// 	// si se cumplen los casos entonces temp se queda como true
-// 	cout << "Cobertura retornando TRUE" << endl;
-// 	return temp;
-
-// }
-
-
-void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, int i, int j, int imax, int jmax){
+void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *inputs, int i, int j, int imax, int jmax){
 
 	// value to assign
 
@@ -226,10 +218,12 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
         if (j < jmax){
             //for (unsigned int k = 2; k-- > 0; ){
         	// dom[i][j] = = [0,1]
+        	//vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
+            //estructuraRecursion = estructura;
         	vector<int> actualDom = dom[i][j];
             for (auto domij: actualDom){
-            	cout << "i: " << i << "j: " << j <<endl;
-            	cout << "En el primer for, domij= " << domij << endl;
+            	//cout << "i: " << i << "j: " << j <<endl;
+            	//cout << "En el primer for, domij= " << domij << endl;
 
             	// primero es 1, luego es 0
             	k = 1- domij;
@@ -242,128 +236,81 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 //dom[i][j].pop_back();
                 // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estructura
 
+            	//vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
+            	//estructuraRecursion = estructura;
             	vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
             	estructuraRecursion = estructura;
 
 
-
-
+            	//solo por orden
                 if (true) {
-                	cout << "k : " << k << endl;
+                	//cout << "k : " << k << endl;
                 	if (hasone(dom,i,j) && k && minimalFC(v,dom, estructuraRecursion, covertureVector, i, j)){
 
-                		cout << "se aplico MFC" << endl;
+                		//cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
-                		cout << "imprimir la matriz" << endl; 
-                		printMatrix(v,28,25);
-
-                		printDomain(dom);
-                		printStruct(estructuraRecursion);
-
-
-
-
-
-
-
+          
                 		if (j!= jmax -1){
-                			cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
-                		    recursiveS(v,dom,estructuraRecursion,covertureVector,i,j+1,imax,jmax);
+                			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
+                		    recursiveS(v,dom,estructuraRecursion,covertureVector, &(*inputs), i,j+1,imax,jmax);
                 		} else {
                 		    if (i != imax -1){
-                		    	cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
-                		        recursiveS(v,dom,estructuraRecursion,covertureVector,i+1,j-(jmax-1),imax,jmax);
+                		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
+                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax);
                 		    } else {
                 		    	// se ha llegado al final de la matriz
-                		    	cout << "imprimir la matriz" << endl; 
-                		        printMatrix(v,28,25);
-                		        cout << "imprimir dominios" << endl;
-
-
-                		        checkCoverture(v,covertureVector);
 
 
 
+                		        if (checkCoverture(v,covertureVector)){
+                		        	int n = (*inputs).vars[0];
+                		        	int d = (*inputs).vars[1];
+                		        	int s = (*inputs).vars[2];
 
-                		        /*cout << "Matrix" << endl;
-                		        for (int row = 0; row < 28; row++){
-                		            for (int col = 0; col < 25; col++){
-                		                cout << v[row][col] << " ";
-                		            }
+                		        	// checkPreferences(v, &((*inputs).preferencesMatrixT));
+                		        	// checkPenalizations(v, &((*inputs).preferencesMatrixT), &((*inputs).vars), &((*inputs).consNurseAssigments), &((*inputs).consNurseTurns), &((*inputs).consMatrix));
+
+ 
+                		        	printMatrix(v,d*s,n);
                 		        }
-                		        cout << endl;*/
+
+
                 		    }
                 		}
 
                 	} else {
-                		cout << "terminado el for para i: " << i << " y j: " << j << endl;
-                		cout << "asignacion actual" << endl;      		
-
-                		//undoFilters(dom,estructura);
+                		
                 		v[i][j] = 0;
-                		printMatrix(v,28,25);
+                		//undoFilters(dom,estructura);
+             
                 		if (j!= jmax -1){
-                			cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
-                		    recursiveS(v,dom,estructuraRecursion,covertureVector,i,j+1,imax,jmax);
+                			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
+                		    recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs),i,j+1,imax,jmax);
                 		} else {
                 		    if (i != imax -1){
-                		    	cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
-                		        recursiveS(v,dom,estructuraRecursion,covertureVector,i+1,j-(jmax-1),imax,jmax);
+                		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
+                		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax);
                 		    } else {
 
 
                 		    	v[i][j] = 0;
                 		    	undoFilters(dom,estructura);
 
-                		    	// se ha llegado al final de la matriz
-                		    	cout << "imprimir la matriz" << endl; 
-                		        printMatrix(v,28,25);
-                		        cout << "imprimir dominios" << endl;
-                		        /*cout << "Matrix" << endl;
-                		        for (int row = 0; row < 28; row++){
-                		            for (int col = 0; col < 25; col++){
-                		                cout << v[row][col] << " ";
-                		            }
-                		        }
-                		        cout << endl;*/
-                		    }
+                		        if (checkCoverture(v,covertureVector)) printMatrix(v,28,25);
+              
+                			}		
                 		}
-
-                	}
-                } 
-                // sin else, se continua normal 
-                // if (j!= jmax -1){
-                //     recursiveS(v,dom,estructura,covertureVector,i,j+1,imax,jmax);
-                // } else {
-                //     if (i != imax -1){
-                //         recursiveS(v,dom,estructura,covertureVector,i+1,j-(jmax-1),imax,jmax);
-                //     } else {
-                //     	// se ha llegado al final de la matriz
-                //     	cout << "imprimir la matriz" << endl; 
-                //         printMatrix(v,4,5);
-                //         cout << "imprimir dominios" << endl;
-                //         /*cout << "Matrix" << endl;
-                //         for (int row = 0; row < 28; row++){
-                //             for (int col = 0; col < 25; col++){
-                //                 cout << v[row][col] << " ";
-                //             }
-                //         }
-                //         cout << endl;*/
-                //     }
-                // }
-                // restaurar 
-                //} else {
- 				//   
-                //}
-            }
-        }  
-    } 
+                	} 
+            	}
+        	}  
+    	} 
+	}
 }
 
 
 void printDomain(vector<vector<vector<int>>> &d){
 
-	cout << "Imprimiendo dominio" << endl;
+	//cout << "Imprimiendo dominio" << endl;
 	for(unsigned int i = 0; i<d.size() ; i++){
 		for(unsigned int j =0; j<d[i].size(); j++){
 			cout << "[ ";
@@ -378,7 +325,7 @@ void printDomain(vector<vector<vector<int>>> &d){
 
 void printStruct(vector<vector<list<int>>> &estructura){
 
-	cout << "Imprimiendo estructura/ complemento del dominio filtrado" << endl;
+	//cout << "Imprimiendo estructura/ complemento del dominio filtrado" << endl;
 	for(unsigned int i = 0; i<estructura.size() ; i++){
 		for(unsigned int j =0; j<estructura[i].size(); j++){
 			cout << "[ ";

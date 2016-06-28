@@ -11,7 +11,6 @@
 using namespace std;
 using Matrix = vector < vector<int> >;
 
-
 int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***preferencesMatrix, int **consNurseAssigments, int **consNurseTurns, int ***consMatrix){
 
 
@@ -25,7 +24,7 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
 
     input = fopen(*filename, "r");
     if (input  == NULL ){
-        printf("File not found\n");
+        printf("No se encontro el archivo. Saliendo ...\n");
         return -1;
     }
 
@@ -36,7 +35,7 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
     d = (*vars)[1];
     s = (*vars)[2];
 
-    cout << n << " " << d << " " << s << endl;
+    //cout << n << " " << d << " " << s << endl;
 
     *covertureMatrix = (int **)malloc(d * sizeof(int*));
     for(i = 0; i < d; i++) (*covertureMatrix)[i] = (int *)malloc(s * sizeof(int));
@@ -47,7 +46,7 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
             fscanf(input, "%d\t", &((*covertureMatrix)[i][j]));
         }
         //fscanf(input, "%d\t%d\t%d\t%d", &covertureMatrix[i][0],&covertureMatrix[i][1],&covertureMatrix[i][2], &covertureMatrix[i][3]);
-        cout << (*covertureMatrix)[i][0] << (*covertureMatrix)[i][1] << (*covertureMatrix)[i][2] << (*covertureMatrix)[i][3] << endl;
+        //cout << (*covertureMatrix)[i][0] << (*covertureMatrix)[i][1] << (*covertureMatrix)[i][2] << (*covertureMatrix)[i][3] << endl;
     }
 
 
@@ -62,9 +61,9 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
             //nurses[i].preferences.push_back(temp);
             //cout << nurses[i].preferences[j] << "\t";
             (*preferencesMatrix)[i][j] = temp;
-            cout << (*preferencesMatrix)[i][j] << " ";
+        //    cout << (*preferencesMatrix)[i][j] << " ";
         }
-        cout << endl;
+        //cout << endl;
         //fscanf(input, "%d\t%d\t%d\t%d", &covertureMatrix[i][0],&covertureMatrix[i][1],&covertureMatrix[i][2], &covertureMatrix[i][3]);
         //cout << covertureMatrix[i][0] << covertureMatrix[i][1] << covertureMatrix[i][2] << covertureMatrix[i][3] << endl;
     }
@@ -87,21 +86,13 @@ int parserv2(char **filename, int **vars, int ***covertureMatrix, int ***prefere
         fscanf(input, "%d\t%d\t%d\t%d", &((*consMatrix)[i][0]), &((*consMatrix)[i][1]), &((*consMatrix)[i][2]), &((*consMatrix)[i][3]));
     }
 
-
-
     return 0;
 }
-
-
-
-
-
 
 void traspose(int **vars, int ***preferencesMatrix, int ***preferencesMatrixT){
 
     int n, d, s;
     int i, j;
-    int temp;
 
     n = (*vars)[0];
     d = (*vars)[1];
@@ -116,16 +107,12 @@ void traspose(int **vars, int ***preferencesMatrix, int ***preferencesMatrixT){
             (*preferencesMatrixT)[j][i] = (*preferencesMatrix)[i][j];
         }
     }
-
-
 }
-
 
 void parseDomains(int **vars, int ***preferencesMatrixT,  vector<Matrix> &m){
 
     int n,d,s;
     int i,j;
-    int temp;
 
     n = (*vars)[0];
     d = (*vars)[1];
@@ -144,8 +131,7 @@ void parseDomains(int **vars, int ***preferencesMatrixT,  vector<Matrix> &m){
 void applyHeuristic(int **vars, vector<Matrix> &m){
 
     int n,d,s;
-    int i,j;
-    int N;
+    int i;
 
     n = (*vars)[0];
     d = (*vars)[1];
@@ -161,12 +147,11 @@ void applyHeuristic(int **vars, vector<Matrix> &m){
 
 void matrixToVec(int **vars, int ***covertureMatrix, vector<int> &v){
 
-    int n,d,s;
+    int d,s;
     int i,j;
     int element;
     int counter = 0;
 
-    n = (*vars)[0];
     d = (*vars)[1];
     s = (*vars)[2];
 
@@ -179,622 +164,306 @@ void matrixToVec(int **vars, int ***covertureMatrix, vector<int> &v){
         }
     }
 
-    /*cout << v.size() << endl;
-
-
-    for(i = 0; i <v.size(); i++){
-        cout << v[i] << endl;
-    }*/
-
-
-}
-
-
-// void recursiveSearch(vector<list<int>> &v, int i, int j, int max, int domainSize){
-
-//     bool constraints = true;
-//     if (j< domainSize){
-//     cout << "test "<< i << " " << j << endl;
-
-//         if (i < max){
-
-//             for(int k = 0; k< 2; k++){
-
-//                 if (constraints == true){
-
-//                     v[i].push_back(k);
-
-//                     if (j != (domainSize -1)){
-
-//                         recursiveSearch(v,i+1,j,max,domainSize);
-
-//                     } else {
-//                     }
-
-//                 }
-
-//             }
-
-
-//         }
-
-//     } else {
-        
-//         if (i < max){
-
-//             if (i != (max -1)){
-//             recursiveSearch(v,i+1,0,max,domainSize);
-//             } else {
-//                 cout << "Printing" << endl;
-//                 cout << "[" << " ";
-//                 for (auto alist: v){
-//                     for (auto element: alist){
-//                         cout << element << " ";
-//                     }
-//                 }
-                
-//                 cout << "]" <<  endl;
-//             }
-//         }
-//     }
-// }
-
-// /* TO DO!!!!!!!!!!!!!!!
-// // sum of objetive and penalize
-// void checkObjetive(){
-
-// }
-
-// // check preferences of a complete assignment
-// void checkPreferences(){
-
-// }
-// */
-
-// void initializeDomains(vector<list<int>> &d, int vectorSize, int listSize){
-
-//     //for (std::list<int>::const_iterator iterator = intList.begin(), end = intList.end(); iterator != end; ++iterator) {
-//     //    std::cout << *iterator;
-//     //}
-
-
-//     for(int i = 0; i<vectorSize; i++){
-//         for(int j = 1; j<(listSize+1); j++){
-//             d[i].push_back(j);
-//         }
-//     }
-
-// }
-
-// void saveDomain(vector<vector<vector<vector<int>>>> &t, vector<vector<vector<int>>> &d){
-
-//     t.push_back(d);
-
-// }
-
-// bool checkDomain(vector<vector<vector<int>>> &d, int nurse, int shift){
-
-//     //cout << " Check Domain: " << index << endl;
-//     //int i = index%n;
-//     //int j = index/n;
-//     //cout << i << "," << j << endl;
-
-//     // if domain of the turn is positive
-//     //if (d[i][j] == 1){
-//     //    return true;
-//     //} else {
-//     //    return false;
-//     //}
-
-
-//     if (d[nurse][shift][0]){
-
-//         return true;
-
-//     } else {
-
-//         return false;
-
-//     }
-
-// }
-// // check if coverture is ready, sum of columns vector of domains
-// bool checkCoverture(vector<int> &v, int index){
-
-//     return true;
-// }
-
-// // only one turn per day avaible
-// // REVISAR NURSE SHIFT YA QUE CAMBIO LA REPRESENTACION!!!
-// // d[nurse][shift][0] = > 1
-// // d[nurse][shift][1] = > 0
-// void mfc(vector<vector<vector<int>>> &d, vector<vector<vector<vector<int>>>> &t,  int nurse, int shift){
-
-//     int count = 3-shift%4; //how many variable to check
-//     //cout << "mfc: "<< i << " " << j << " " << count << endl; 
-//     // if no more variables to check or is already checked!
-
-//    /* for (int temp = 0; temp<count; temp++){
-//         shift++;
-//         d[nurse][shift] = 0;
-
-//     }*/
-
-//     /*j = index/n;
-//     while(count > 0|| d[i][j+1] == 0){
-//         //cout << "while: ";
-//         //cout << "i: " << i << "j: " << j << endl;
-//         cout << count << " ";
-//         j++;
-//         d[i][j] = 0;
-//         count--;
-//     }*/
-
-//    // cout << "termina while con index: " << index << endl;
-
-//     // Last try:
-//     // filter only one shift per
-//     //
-
-
-//     for (int temp = 0; temp < count; temp++ ){
-//         shift++;
-//         d[nurse][shift][0] = 0;
-//     }
-
-//     saveDomain(t,d);
-
-
-
-
-
-
-// }
-
-
-// void recursiveSearch(vector<int> &v, vector<vector<int>> &d, Matrix &m, int i, int max){
-//     //bool constraints = true;
-//     cout << i << endl;
-//     if (i < max){
-//         for (unsigned int j = 2; j-- > 0; ){
-
-//             bool test = checkDomain(d,i,25);
-               
-//             if (test){
-//             //if (constraints == true){
-//                 //cout << "test: " << i << endl;
-//                 v[i] = j;
-//                 // mfc
-//                 //mfc(d, i);
-
-
-//                 if (i != max -1){
-                    
-//                     recursiveSearch(v,d,m,i+1,max);
-//                 } else {
-//                     /*
-//                     cout << "vector: [";
-//                     for(int k = 0; k<v.size(); k++){
-//                        cout <<  v[k] << "," ;
-//                     }
-//                     cout << "]" << endl;
-                    
-//                     cout << "entrando a _1dTo2d" << endl;*/
-//                     _1dTo2d(v,m,28,25);
-//                     cout << "entrando a _printMatrix" << endl;
-//                     printMatrix(m,28, 25);
-                    
-//                 }
-
-//             } else {
-//                 cout << "pegado" << endl;
-//                 /*// assign 0 and pass to next
-//                 // added
-//                 v[i] = 0;
-//                 if (i != max -1){
-//                     recursiveSearch(v,d,m,i+1,max);
-//                 } else {
-//                     //cout << "vector: [";
-//                     //for(int k = 0; k<v.size(); k++){
-//                     //    cout <<  v[k] << "," ;
-//                     //}
-//                     //cout << "]" << endl;
-//                     vector<vector<int>> dv(25,vector<int>(7*4,1));
-//                     d = dv;
-//                     _1dTo2d(v,m,7*4,25);
-//                     printMatrix(m,7*4, 25);
-//                 }*/
-//             }
-//         }
-//     }
-// }
-
-
-void checkout(){
-
 }
 
 
 
+int checkPreferences(vector<vector<int>> &v, int ***preferencesMatrixT){
 
-void recursiveSearch2(vector<vector<int>> &v, vector<vector<vector<int>>> &d, vector<vector<vector<vector<int>>>> &t,  int i, int j, int imax, int jmax){
+    int totalPrefs = 0;
 
-    if (i< imax){
-
-        if (j < jmax){
-    
-            for (unsigned int k = 2; k-- > 0; ){
-    
-                if(true){
-
-                        
-                    // si el 1 esta disponible en el dominio
-                    v[i][j] = k;
-                    // falta si no esta disponible el 1
-
-                    //mfc(d,t,j,i);
-
-                    if (j!= jmax -1){
-                        
-                        recursiveSearch2(v,d,t,i,j+1,imax,jmax);
-
-                    } else {
-
-                        if (i != imax -1){
-                            recursiveSearch2(v,d,t,i+1,j-(jmax-1),imax,jmax);
-                        } else {
-
-
-
-                            printMatrix(v,28,25);
-
-                            /*cout << "Matrix" << endl;
-                            for (int row = 0; row < 28; row++){
-                                for (int col = 0; col < 25; col++){
-
-                                    cout << v[row][col] << " ";
-                                }
-                            }
-                            cout << endl;*/
-
-                        }
-
-
-
-                    }
-    
-                // restaurar 
-    
-                } else {
-    
-                }
-            }
-        }  
-    } }
-
-// void joinDomains(vector<list<int>> &v, list<int> filtered){
-
-// }
-
-
-
-//filro para que enfermeras trabajan una vez al dia, es decir
-// si trabaja el turno de mañana entonces si cambian a 0
-void filterSameDay(vector<vector<int>> &d, int nurse, int shift){
-
-    int remainShifts = 3-shift%4;
-
-    // temp = cuantos dias quedan por fitlrar en cada iteraicon
-    // filrra assignaicon y turnos restatnes 
-    for (int temp=1; temp< remainShifts+1; temp++){
-
-        d[shift+temp][nurse] = 0;
-
+    for(unsigned int i= 0; i<v.size(); i++){
+        for(unsigned int j = 0; j< v[i].size(); j++){
+            totalPrefs+= v[i][j]*((*preferencesMatrixT)[i][j] );
+        }
     }
 
+    return totalPrefs;
+
 }
 
+int checkPenalizations(vector<vector<int>> &v, int ***preferencesMatrixT, int **vars, int **consNurseAssigments, int **consNurseTurns, int ***consMatrix){
+/*
+    int *consNurseAssigments; // asignaciones min y max
+    int *consNurseTurns; // turnos consecutivos min y max
 
-//Chequeo de cobertura, si la suma de las enfermeras disponibles para algun turno no se cumple, entonces
-// retorna false, utilizando SumNurses para sumar y ver disponibles
-bool checkOut(vector<int> coverture, vector<vector<int>> domainTime, vector<list<int>> v, int actual){
+
+    // restricciones de turnos
+    int **consMatrix; // turnos consecutivos iguales min y max, asignaciones por turno min y max
+*/
+    int minAssignments = (*consNurseAssigments)[0];
+    int maxAssignments = (*consNurseAssigments)[1];
+
+    int minDaily = (*consNurseTurns)[0];
+    int maxDaily = (*consNurseTurns)[1];
+
+    int shift0Min = (*consMatrix)[0][2];
+    int shift0Max = (*consMatrix)[0][3];
+
+    int shift1Min = (*consMatrix)[1][2];
+    int shift1Max = (*consMatrix)[1][3];
+ 
+    int shift2Min = (*consMatrix)[2][2];
+    int shift2Max = (*consMatrix)[2][2];
+ 
+    int shift3Min = (*consMatrix)[2][2];
+    int shift3Max = (*consMatrix)[2][2];
 
 
+    int shift0MinCons = (*consMatrix)[0][0];
+    int shift0MaxCons = (*consMatrix)[0][1];
 
-    for (int i = 0; i<coverture.size(); i++){
+    int shift1MinCons = (*consMatrix)[1][0];
+    int shift1MaxCons = (*consMatrix)[1][1];
+ 
+    int shift2MinCons = (*consMatrix)[2][0];
+    int shift2MaxCons = (*consMatrix)[2][1];
+ 
+    int shift3MinCons = (*consMatrix)[2][0];
+    int shift3MaxCons = (*consMatrix)[2][1];
 
-        int size= sumNurses(domainTime[i]);
-        cout << "Covertura: " << coverture[i] << " Size: " << size << " v: " << v[i].size() << endl;
-        // las que quedan del dominio, la que quiero asignar + las asginadas 
-        //int sum = size+v[i].size();
-        int sum = size;
-        //if (actual == i) sum++;
+    int n,d,s;
 
-        if ( coverture[i]<=sum){
+    n = (*vars)[0];
+    //d = (*vars)[1];
+    s = (*vars)[2];
+
+    int totalPenalizations=0;
+
+    // total de turnos trabajados
+    vector<int> totals(n);
+
+    vector<int> dailyAux(n,0);
+    // total turnos/dias trabajados consecutivos
+    vector<int> dailyCounter(n,0);
+
+    // Cuantas veces se trabajo y cuantas dias consecutitvos se trabajo
+    // por cada turno
+    for(unsigned int i= 0; i<v.size(); i++){
+        // por cada enfermera
+        for(unsigned int j = 0; j< v[i].size(); j++){
+            // contar asignaciones
+            totals[j]+= v[i][j];
+            dailyAux[j]+= v[i][j];
+            // si se llega al ultimo turno del dia
+            if((i%s) == (unsigned)(s-1)){
+                // si existe alguna asignacion en el dia
+                if(dailyAux[j]>0){
+                    // se aumenta el conteo de asignaciones por cada s turnos = dias
+                    dailyCounter[j]++;
+                    dailyAux[j] = 0;
+                }
+            } else{
+                // comienza nuevo dia y se reinicia
+                dailyAux[j] = 0;
+            }
+
+        }
+    }
+
+    int penalization1 = 0;
+
+    for(unsigned int j = 0; j<v[0].size(); j++){
+        if (minAssignments <= totals[j] && maxAssignments>= totals[j]){
+
         } else {
-            return false;
+            penalization1+=3;
+        
+
         }
+
     }
-    return true;
-}
+    int penalization2 = 0;
+    for(unsigned int j = 0; j<v[0].size(); j++){
+        if (minDaily <= totals[j] && maxDaily>= totals[j]){
 
-// SUma de enfermeras disponibles en la matriz,
-// es decir las la suma de los 1s en las filas de D*sxN
-int sumNurses(vector<int> row){
-
-    int nursesCount=0;
-    for(int value: row){
-        if (value != -1){
-            nursesCount+=value;
+        } else {
+            penalization1+=3;
         }
+
     }
-    return nursesCount;
-}
 
 
-void recursiveSearch4(vector<list<int>> &v, vector<vector<vector<int>>> &d, vector<int> &coverture, int i, int imax){
 
-    vector<vector<int>> domainTime = d.back();
-    if (i < imax){
-        int flag = 1;
 
-        // recorriendo el dominio de enfermeras para el turno i
-        for(int j = 0; j<domainTime[i].size(); j++){
-    
-            // si la enfermera esta disponible
 
-            for (unsigned int k = 2; k-- > 0; ){
 
-                bool finder = (((v[i].end()) == find(v[i].begin(), v[i].end(), j+1 )));
-                if (domainTime[i][j] && finder && k){
-                    cout << "Entrando al if con turno: " << i << "y enfermera: " << j+1 << endl;
-                    // filtro
-                    filterSameDay(domainTime,j,i);
-                    //check out, recibe el turno, dia, y el tamaño del vector de asignacion para el turno i
-                    if (checkOut(coverture, domainTime, v, i)) {
-                        // agregar a los dominios en el tiempo el dominio filtrado en este tiempo
-                        d.push_back(domainTime);
-                        // asignar enfermera 
-                        v[i].push_back(j+1);
-                        cout<< "cobertura satisfecha" << endl;
-                        cout << "imprimriendo asignacion :"<< endl;
-                        for (auto val: v){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-                        cout << endl;
-                        cout << "imprimriendo filtro :"<< endl;
-                        for (auto val: domainTime){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-                        cout << endl;
-                    } else {
-                        cout << "covertura no satisfecha" << endl;
-                        cout << "imprimriendo asignacion :"<< endl;
-                        for (auto val: v){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-                        cout << endl;
-                        cout << "imprimriendo filtro :"<< endl;
-                        for (auto val: domainTime){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-                        cout << endl;
-                        flag =1;
-                        // vector<vector<int>> domainTemp = d.back();
-                         d.pop_back();
-                        // domainTemp[i][j]=0;
-                        // d.push_back(domainTemp);
-                        if (v[i].size() == 0){
-                            cout << "ME DEVOLVI DE TURNO" << endl;
-                            v[i-1].pop_back();
-                            recursiveSearch4(v,d,coverture,i-1,imax);
-                        } else{
-                            cout << "ME DEVOLVI DE ASIGNACION" << endl;
-                            v[i].pop_back();
-                            recursiveSearch4(v,d,coverture,i,imax);
-                        }
+    // cuantas veces trabaja consecutiva el turno s
+    vector<vector<int>> shiftConsecutive(s,vector<int>(n,0));
+    // valor de ese turno en el dia anterior
+    vector<vector<int>> shiftTemp(s,vector<int>(n,0));
+    // cuantas veces trabaja el turno s
+    vector<vector<int>> shiftCounter(s,vector<int>(n,0));
+
+
+    // por cada turno
+    for(unsigned int i = 0; i<v.size(); i++){
+        // por cada enfermera
+        for(unsigned int j = 0; j< v[i].size(); j++){
+           
+            // turnos del tipo 0
+            if (i%s == 0){
+
+
+                shiftCounter[0][j]+=v[i][j];
+
+                shiftTemp[0][j]+=v[i][j];
+                if(v[i][j] == 1){
+                    if (shiftTemp[0][j]== 1){
+                        shiftConsecutive[0][j]++;
                     }
                 } else {
+                    shiftConsecutive[0][j] = 0;
+                    shiftTemp[0][j] = 0;
+                }
 
+                
 
-                    if(checkOut(coverture, domainTime, v, i)){
-
-                        domainTime[i][j] = 0;
-                        d.push_back(domainTime);
-
-                        recursiveSearch4(v,d,coverture,i+1,imax);
-
-
-
-                    } else { 
-
-                        cout << "covertura no satisfecha" << endl;
-                        cout << "imprimriendo asignacion :"<< endl;
-                        for (auto val: v){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-                        cout << endl;
-                        cout << "imprimriendo filtro :"<< endl;
-                        for (auto val: domainTime){
-                            cout << "<";
-                            for (auto l: val){
-                                cout << l << " ";
-                            }
-                            cout << ">"<< endl;
-                        }
-
-
+            // turnos del tipo 1
+            } else if (i%s == 1){
+                shiftCounter[1][j]+=v[i][j];
+                
+                shiftTemp[1][j]+=v[i][j];
+                if(v[i][j] == 1){
+                    if (shiftTemp[1][j]== 1){
+                        shiftConsecutive[1][j]++;
                     }
-
-
-                } 
-
-            } 
-
-        } 
-        if (flag == 1) recursiveSearch4(v,d,coverture,i+1,imax);
-    }
-}
+                } else {
+                    shiftConsecutive[1][j] = 0;
+                    shiftTemp[1][j] = 0;
+                }
 
 
 
+            // turnos del tipo 2
+            } else if (i%s == 2){
+                shiftCounter[2][j]+=v[i][j];
+
+                shiftTemp[2][j]+=v[i][j];
+                if(v[i][j] == 1){
+                    if (shiftTemp[2][j]== 1){
+                        shiftConsecutive[2][j]++;
+                    }
+                } else {
+                    shiftConsecutive[2][j] = 0;
+                    shiftTemp[2][j] = 0;
+                }
 
 
 
+            // turnos del tipo 3
+            } else {
+                shiftCounter[3][j]+=v[i][j];
 
-
-
-// 
-void recursiveSearch3(vector<list<int>> &v, vector<vector<vector<int>>> &d, vector<int> &coverture, int i, int imax){
-
-    vector<vector<int>> domainTime = d.back();
-    if (i < imax){
-        int flag = 1;
-
-        // recorriendo el dominio de enfermeras para el turno i
-        for(int j = 0; j<domainTime[i].size(); j++){
-    
-            // si la enfermera esta disponible
-            if (domainTime[i][j] == 1){
+                shiftTemp[3][j]+=v[i][j];
+                if(v[i][j] == 1){
+                    if (shiftTemp[3][j]== 1){
+                        shiftConsecutive[3][j]++;
+                    }
+                } else {
+                    shiftConsecutive[3][j] = 0;
+                    shiftTemp[3][j] = 0;
+                }
 
             }
 
-            bool finder = (((v[i].end()) == find(v[i].begin(), v[i].end(), j+1 )));
-            if (domainTime[i][j] && finder){
-                cout << "Entrando al if con turno: " << i << "y enfermera: " << j+1 << endl;
-    
-                // filtro
-                filterSameDay(domainTime,j,i);
-
-                //check out, recibe el turno, dia, y el tamaño del vector de asignacion para el turno i
-                if (checkOut(coverture, domainTime, v, i)) {
+        }
+    }
 
 
 
-                    // agregar a los dominios en el tiempo el dominio filtrado en este tiempo
-                    d.push_back(domainTime);
-                    // asignar enfermera 
-                    v[i].push_back(j+1);
-                    cout<< "cobertura satisfecha" << endl;
+    int penalization3=0;
+    int penalization4=0;
 
-                    cout << "imprimriendo asignacion :"<< endl;
-                    for (auto val: v){
-                        cout << "<";
-                        for (auto l: val){
-                            cout << l << " ";
-                        }
+   // por cada turno
+    for(unsigned int i = 0; i<v.size(); i++){
+        // por cada enfermera
+        for(unsigned int j = 0; j< v[i].size(); j++){
+            if (i%s == 0){
 
-                        cout << ">"<< endl;
-
-                    }
-
-                    cout << endl;
-
-
-                    cout << "imprimriendo filtro :"<< endl;
-                    for (auto val: domainTime){
-                        cout << "<";
-                        for (auto l: val){
-                            cout << l << " ";
-                        }
-
-                        cout << ">"<< endl;
-
-                    }
-
-                    cout << endl;
-
+                if (shift0Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift0Max){
 
                 } else {
+                    penalization3+=3;
 
-                    cout << "covertura no satisfecha" << endl;
+                }
 
-                    cout << "imprimriendo asignacion :"<< endl;
-                    for (auto val: v){
-                        cout << "<";
-                        for (auto l: val){
-                            cout << l << " ";
-                        }
+                if (!(shift0MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift0MaxCons)){
+                    penalization4+=3;
 
-                        cout << ">"<< endl;
+                }
 
-                    }
+            }
 
-                    cout << endl;
+            if (i%s == 1){
 
+                if (shift1Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift1Max){
 
-                    cout << "imprimriendo filtro :"<< endl;
-                    for (auto val: domainTime){
-                        cout << "<";
-                        for (auto l: val){
-                            cout << l << " ";
-                        }
+                } else {
+                 
+                    penalization3+=3;   
+                }
 
-                        cout << ">"<< endl;
-
-                    }
-
-                    cout << endl;
-
-                    flag =1;
-
-
-                    // vector<vector<int>> domainTemp = d.back();
-                     d.pop_back();
-                    // domainTemp[i][j]=0;
-                    // d.push_back(domainTemp);
-
-
-                    if (v[i].size() == 0){
-                        cout << "ME DEVOLVI DE TURNO" << endl;
-                        v[i-1].pop_back();
-                        recursiveSearch3(v,d,coverture,i-1,imax);
-                    } else{
-
-                        cout << "ME DEVOLVI DE ASIGNACION" << endl;
-                        v[i].pop_back();
-                        recursiveSearch3(v,d,coverture,i,imax);
-
-                    }
-
-
+                if (!(shift1MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift1MaxCons)){
+                    penalization4+=3;
 
                 }
             }
 
-        } 
+            if (i%s == 2){
 
-        if (flag == 1) recursiveSearch3(v,d,coverture,i+1,imax);
+                if (shift2Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift2Max){
 
+                } else {
+
+                    penalization3+=3;
+                    
+                }
+
+                if (!(shift2MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift2MaxCons)){
+                    penalization4+=3;
+
+                }
+
+            }
+            if (i%s == 3){
+
+                if (shift3Min<=shiftCounter[i][j] && shiftCounter[i][j]<=shift3Max){
+
+                } else {
+
+                    penalization3+=3;
+                    
+                }
+
+                if (!(shift3MinCons<=shiftConsecutive[i][j] && shiftConsecutive[i][j]<=shift3MaxCons)){
+                    penalization4+=3;
+
+                }
+
+            }
+
+
+
+        }
     }
+
+    
+    totalPenalizations = penalization1+penalization2+penalization3+penalization4;
+
+    return totalPenalizations;
+
 }
 
+int checkObjetive(int totalPrefs, int totalPenalizations){
+    return totalPenalizations+totalPrefs;
+}
 
 
 
 void printMatrix(Matrix &m, int rows, int columns){
 
-    cout << "Printing Matrix" << endl;
+    cout << "Imprimiendo Matriz de asignacion" << endl;
     for (int i = 0; i<rows; i++){
         for(int j = 0; j< columns; j++){
             cout << m[i][j] << " ";

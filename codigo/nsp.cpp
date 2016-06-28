@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <time.h>
 	
 #include "nursescheduling.hpp"
 #include "helpers.hpp"
@@ -15,10 +16,9 @@ using namespace std;
 
 using Matrix = vector < vector<int> >;
 
-
 int main (int argc, char **argv) {
 
-
+    clock_t start = clock();
     cout << "Iniciando" << endl;
     int *vars = new int[3];
     int **covertureMatrix;
@@ -34,23 +34,15 @@ int main (int argc, char **argv) {
     // restricciones de turnos
     int **consMatrix; // turnos consecutivos iguales min y max, asignaciones por turno min y max
 
-    int *sortedIds;
-    int **heuristicMatrix;
-	    
 
     //int a = parserv2(&argv[1], &vars, &covertureMatrix, &preferencesMatrix);
     int a = parserv2(&argv[1], &vars, &covertureMatrix, &preferencesMatrix, &consNurseAssigments, &consNurseTurns, &consMatrix);
     
     traspose(&vars, &preferencesMatrix, &preferencesMatrixT);
-
-    
-
     int n,d,s;
     n = (vars)[0];
     d = (vars)[1];
     s = (vars)[2];
-
-    int i,j;
 
 
     //int c = heuristics(&vars, &nurses, &sortedIds, &heuristicMatrix);
@@ -75,34 +67,35 @@ int main (int argc, char **argv) {
 
     // matrix of assigments
     // 1 si enfermera se asigna al turno, 0 en caso contrario
-    Matrix assignmentMatrix(d*s, vector<int>(n));
+    //Matrix assignmentMatrix(d*s, vector<int>(n));
     // vector of assignments, listas enfermeras asignadas por cada turno en orden
-    vector< list<int> > assignmentVector(d*s);
+    //vector< list<int> > assignmentVector(d*s);
 
     // matrix of assigned preferences
-    Matrix assignmentPrefsMatrix(d*s, vector<int>(n) );
+    //Matrix assignmentPrefsMatrix(d*s, vector<int>(n) );
 
 
     //domainVector[i][j][0] => 1
     //domainVector[i][j][1] => 0 
-    vector<vector<vector<int>>> domainsVector(n,vector<vector<int>>(d*s,vector<int>(2,1)));
-    vector<list<int>> preferencesVector(d*s);
+    //vector<vector<vector<int>>> domainsVector(n,vector<vector<int>>(d*s,vector<int>(2,1)));
+    //vector<list<int>> preferencesVector(d*s);
 
 
     //vector<int> testo(n*d*s,0);
-    Matrix testo2(d*s,vector<int>(n,0));
+    //Matrix testo2(d*s,vector<int>(n,0));
+    Matrix assignmentM(d*s,vector<int>(n,0));
     //printMatrix(testo2, 2,4);
     //recursiveSearch(testo,domainsVector,testo2,0,n*d*s);
 
-    vector<vector<int>> testos(2,vector<int>(2));
+    //vector<vector<int>> testos(2,vector<int>(2));
     // little test
     //recursiveSearch2(testos,domainsVector,0,0,2,2);
     //recursiveSearch2(testo2,domainsVector,timeDomains,0,0,d*s,n);
 
 
 
-    vector<list<int>> testo3(d*s);
-    vector< vector< vector<int> > > domainsVec(1,(vector<vector<int>>(d*s,vector<int>(n,1))));
+    //vector<list<int>> testo3(d*s);
+    //vector< vector< vector<int> > > domainsVec(1,(vector<vector<int>>(d*s,vector<int>(n,1))));
 
 
     //initializeDomains(d,d*s,n)
@@ -121,28 +114,42 @@ int main (int argc, char **argv) {
     }
 
 
-    Matrix juguete1(4,vector<int>(5));
-    vector<vector<vector<int>>> juguete2(4,(vector<vector<int>>(5,(vector<int>(2)))));
-    vector<vector<list<int>>> juguete3(4,(vector<list<int>>(5)));
+    // Matrix juguete1(4,vector<int>(5));
+    // vector<vector<vector<int>>> juguete2(4,(vector<vector<int>>(5,(vector<int>(2)))));
+    // vector<vector<list<int>>> juguete3(4,(vector<list<int>>(5)));
 
-    vector<int> juguete4 = {1,4,1,2};
+    // vector<int> juguete4 = {1,4,1,2};
 
 
-    for (int i = 0; i<4; i++){
-        for(int j = 0; j<5; j++){
-            for(int k = 0; k<2; k++){
-                juguete2[i][j][k] = k;
-            }
-        }
-    }
+    // for (int i = 0; i<4; i++){
+    //     for(int j = 0; j<5; j++){
+    //         for(int k = 0; k<2; k++){
+    //             juguete2[i][j][k] = k;
+    //         }
+    //     }
+    // }
 
-    recursiveS(testo2, doms,estructura, covertureVector, 0,0 , d*s, n);
+    struct s inputs;
+    inputs.vars = vars;
+    inputs.preferencesMatrixT = preferencesMatrixT;
+    inputs.consNurseAssigments = consNurseAssigments;
+    inputs.consNurseTurns = consNurseTurns;
+    inputs.consMatrix = consMatrix;
+
+    // cout << data.vars[0] << endl;
+
+
+
+    // recursiveS(assignmentM, );
+    recursiveS(assignmentM, doms,estructura, covertureVector, &inputs,0,0 , d*s, n);
+    //recursiveS(assignmentM, doms,estructura, covertureVector, 0,0 , d*s, n);
     //recursiveS(juguete1,juguete2,juguete3,juguete4, 0,0,4,5);
 
 
 
 
 
+    cout << "El tiempo de ejecucion fue: " << (double)(clock() - start)/CLOCKS_PER_SEC << " segundos." << endl;;
     return 0;
 
 }
