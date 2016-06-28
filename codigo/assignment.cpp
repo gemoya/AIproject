@@ -159,22 +159,6 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 		// chequear covertura de los turnos del dia
 		for(int i = (shift+1); i<shift+remainShifts+1; i++){
 
-			//for(unsigned j = 0; j < dom[i].size(); j++){
-			//for(auto n: dom[i]){
-				//for(auto element: dom[i][j]){
-					//cout << "elemen: " << element << endl;
-					//if (element == 1) counter+= element;
-				//}
-			//}
-		// chequear la cobertura del resto de los turnos
-		// for(unsigned int i = (shift+1); i<covertureVector.size(); i++){
-		// 	for(unsigned j = 0; j < dom[i].size(); j++){
-		// 	//for(auto n: dom[i]){
-		// 		for(auto element: dom[i][j]){
-		// 			//cout << "elemen: " << element << endl;
-		// 			counter+= element;
-		// 		}
-		// 	}
 			remainCoverture+=covertureVector[i];
 		}
 
@@ -202,51 +186,33 @@ bool coverture(vector<vector<int>> &v, vector<int> &covertureVector, vector<vect
 
 void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector<vector<list<int>>> estructura, vector<int> &covertureVector, s *inputs, int i, int j, int imax, int jmax, clock_t start){
 
-	// value to assign
-
+	
 	int k;
     if (i< imax){
         if (j < jmax){
-            //for (unsigned int k = 2; k-- > 0; ){
-        	// dom[i][j] = = [0,1]
-        	//vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
-            //estructuraRecursion = estructura;
+
         	vector<int> actualDom = dom[i][j];
             for (auto domij: actualDom){
-            	//cout << "i: " << i << "j: " << j <<endl;
-            	//cout << "En el primer for, domij= " << domij << endl;
-
-            	// primero es 1, luego es 0
+  
+        
             	k = 1- domij;
-                // por mientras
-            	// si se cumple covertura (coverture == true), se sigue, delo contrario se debe acabar la recursion actual
-            	// quizas covertura debe ir antes del for..
-                //if(coverture(covertureVector, dom)){
-
-                //v[i][j] = k;
-                //dom[i][j].pop_back();
-                // si el valor es 1, entonces se debe hacer MFC para filtrar dom y pasar a estructura
-
-            	//vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
-            	//estructuraRecursion = estructura;
+             
             	vector<vector<list<int>>> estructuraRecursion(4,(vector<list<int>>(5)));
             	estructuraRecursion = estructura;
 
 
             	//solo por orden
                 if (true) {
-                	//cout << "k : " << k << endl;
+             
                 	if (hasone(dom,i,j) && k && minimalFC(v,dom, estructuraRecursion, covertureVector, i, j)){
 
-                		//cout << "se aplico MFC" << endl;
                 		v[i][j] = k;
           
                 		if (j!= jmax -1){
-                			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
+                			
                 		    recursiveS(v,dom,estructuraRecursion,covertureVector, &(*inputs), i,j+1,imax,jmax, start);
                 		} else {
                 		    if (i != imax -1){
-                		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
                 		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax, start);
                 		    } else {
                 		    	// se ha llegado al final de la matriz
@@ -277,14 +243,11 @@ void recursiveS(vector<vector<int>> &v, vector<vector<vector<int>>> &dom, vector
                 	} else {
                 		
                 		v[i][j] = 0;
-                		//undoFilters(dom,estructura);
              
                 		if (j!= jmax -1){
-                			//cout << "entrando a recursion con i; " << i << " j: " << j+1 << endl;
                 		    recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs),i,j+1,imax,jmax, start);
                 		} else {
                 		    if (i != imax -1){
-                		    	//cout << "entrando a recursion con i; " << i+1 << " j: " << j-jmax+1 << endl;
                 		        recursiveS(v,dom,estructuraRecursion,covertureVector,&(*inputs), i+1,j-(jmax-1),imax,jmax, start);
                 		    } else {
 

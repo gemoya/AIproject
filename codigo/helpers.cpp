@@ -10,6 +10,8 @@
 
 using namespace std;
 
+//funciones auxiliares que se utilizaban en un momento pero ya no
+// fuente: https://gsamaras.wordpress.com/code/quicksort-c/
 
 
 /**

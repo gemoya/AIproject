@@ -1,4 +1,4 @@
-CPPFLAGS=--std=c++11 -Wall
+CPPFLAGS=--std=c++11 
 CC = g++
 
 all: nsp.o nursescheduling.o helpers.o assignment.o 
