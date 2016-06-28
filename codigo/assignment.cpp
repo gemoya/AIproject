@@ -13,17 +13,8 @@
 using namespace std;
 using Matrix = vector < vector<int> >;
 
-/*
-Ejemplo dom
-[
-[[1,0],[1,0],[1,0]],
-[[1,0],[1,0],[1,0]],
-[[1,0],[1,0],[1,0]],
-[[1,0],[1,0],[1,0]]
-]
 
 
-*/
 
 // v, matriz de D*SxN de asignaciones i: shifts, j: nurses
 // dom dominios
